@@ -1,2 +1,86 @@
-[InternetShortcut]
-URL=http://localhost:8792/notebooks/Untitled%20Folder/Python%20modeling.ipynb
+import numpy as np
+import pandas as pd
+
+# import load_iris function from datasets module
+from sklearn.datasets import load_iris
+
+# save iris dataset and its attributes
+iris = load_iris()
+
+# store feature matrix in "X"
+X = iris.data
+
+# store response varrible in "y"
+y = iris.target
+
+#Seeing if it worked
+
+# the shapes of X and y should be(150,4)& 150 respectivly
+print(X.shape)
+print(y.shape)
+
+# print the names of the four features
+print(iris.feature_names)
+
+# print the scheme for species: 0 = setosa, 1 = versicolor, 2 = virginica
+print(iris.target_names)
+
+from statsmodels.discrete.discrete_model import Probit
+# bringing in the probit moddle
+
+# split X and y into training and testing sets
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=4)
+
+# print the shapes of the new X objects
+print(X_train.shape)
+print(X_test.shape)
+
+
+# print the shapes of the new X objects
+print(X_train.shape)
+print(X_test.shape)
+
+#  train the model on the training set
+logreg = LogisticRegression()
+logreg.fit(X_train, y_train)
+
+# making predictions on the testing set
+y_pred = logreg.predict(X_test)
+
+# compare actual response values (y_test) with predicted response values (y_pred)
+print(metrics.accuracy_score(y_test, y_pred))
+
+# looking at the most simular entry and sharing its traget varible or iris type
+knn = KNeighborsClassifier(n_neighbors=1)
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+# compare actual response values (y_test) with predicted response values (y_pred)
+print(metrics.accuracy_score(y_test, y_pred))
+
+# knn classifucation method again but compairing two the five most simualr flowers
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+# compare actual response values (y_test) with predicted response values (y_pred)
+print(metrics.accuracy_score(y_test, y_pred))
+
+# This writing a for loop to compare differnt number of neighbors
+k_range = list(range(1, 26))
+#annempty matrix that we will store our computed accracy in
+scores = []
+for k in k_range:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+#adding the reaults to our matrix
+    scores.append(metrics.accuracy_score(y_test, y_pred))
+    
+    import matplotlib.pyplot as plt
+#bring in visualsation capibiluites 
+%matplotlib inline
+#allowing our graphs to show on our notebook instead of a pop up window
+plt.plot(k_range, scores)
+#always lable your axis
+plt.xlabel('Value of K for KNN')
+plt.ylabel('Testing Accuracy')
